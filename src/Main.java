@@ -4,8 +4,13 @@ import java.awt.event.*;
 
 public class Main extends JPanel {
 
+    private static BasicTroop bt;
+    private Timer timer;
+
     public Main(int w,int h){
         setSize(w,h);
+        setUpTimer(1000/60);
+        bt = new BasicTroop(100,100);
     }
 
     public static void main(String[] args) {
@@ -25,7 +30,25 @@ public class Main extends JPanel {
         frame.setVisible(true);
         frame.setResizable(false);
 
+
     }
+    public void setUpTimer(int delay){
+        if(timer == null) {
+            timer = new Timer(delay, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //this code executes each frame!
+
+                    bt.move();
+
+                    repaint();
+                }
+            });
+        }
+
+        timer.start();
+    }
+
     public void paintComponent(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
 
@@ -36,5 +59,8 @@ public class Main extends JPanel {
         b.draw(g2);
         c1.draw(g2);
         c2.draw(g2);
+        bt.draw(g2);
     }
+
+
 }
