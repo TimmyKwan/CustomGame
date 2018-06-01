@@ -7,9 +7,9 @@ public class BasicTroop {
     public BasicTroop(int x,int y){
         this.x = x;
         this.y = y;
-        vx = 10;
-        vy = 10;
-        destin = new Point(1000,500);
+        vx = 5;
+        vy = 5;
+        destin = new Point(x,y);
     }
 
     public void draw(Graphics2D g2){
