@@ -18,10 +18,14 @@ public class BasicTroop {
     }
 
     public void move(){
-        if (Math.abs(destin.getX()-x)>10)
+        if (Math.abs(destin.getX()-x)>5 && x < destin.getX())
             x += vx;
-        if (Math.abs(destin.getY()-y)>10)
+        if (Math.abs(destin.getX()-x)>5 && x > destin.getX())
+            x -= vx;
+        if (Math.abs(destin.getY()-y)>5 && y < destin.getY())
             y += vy;
+        if (Math.abs(destin.getY()-y)>5 && y > destin.getY())
+            y -= vy;
     }
 
     public void setVx(int vx) {

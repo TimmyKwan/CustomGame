@@ -10,6 +10,7 @@ public class Main extends JPanel {
     public Main(int w,int h){
         setSize(w,h);
         setUpTimer(1000/60);
+        setUpMouseListener();
         bt = new BasicTroop(100,100);
     }
 
@@ -47,6 +48,36 @@ public class Main extends JPanel {
         }
 
         timer.start();
+    }
+
+    public void setUpMouseListener(){
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+                bt.setDestin(e.getX(),e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
 
     public void paintComponent(Graphics g){
