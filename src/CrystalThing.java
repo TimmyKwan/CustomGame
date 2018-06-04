@@ -13,4 +13,6 @@ public class CrystalThing {
         g2.fillRect(x,y,100,100);
     }
 
+
+
 }
