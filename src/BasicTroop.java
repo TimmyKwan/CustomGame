@@ -24,7 +24,6 @@ public class BasicTroop {
             plat.mine();
             storage++;
         }
-
     }
 
     public void move(){
