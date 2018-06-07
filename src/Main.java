@@ -60,6 +60,7 @@ public class Main extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
 
+                bt.setInitial();
                 bt.setDestin(e.getX(),e.getY());
             }
 
