@@ -1,18 +1,26 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Main extends JPanel {
 
-    private static BasicTroop bt;
-    private Timer timer;
+    private Timer timer, timer2;
+    private static ArrayList<BasicTroop> troops;
+    private static ArrayList<Bullet> bullets;
+    private static ArrayList<DefenceTower> defs;
 
     public Main(int w,int h){
         setSize(w,h);
         setUpTimer(1000/60);
         setUpMouseListener();
-        bt = new BasicTroop(100,100);
+        troops = new ArrayList<>();
+        defs = new ArrayList<>();
+        bullets = new ArrayList<>();
+        troops.add(new BasicTroop(100,100));
     }
+
+
 
     public static void main(String[] args) {
 
@@ -40,7 +48,11 @@ public class Main extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     //this code executes each frame!
 
-                    bt.move();
+                    for (BasicTroop bt :
+                            troops) {
+                        bt.move();
+                    }
+
 
                     repaint();
                 }
@@ -48,6 +60,24 @@ public class Main extends JPanel {
         }
 
         timer.start();
+    }
+
+    public void setUpTimer2(int delay){
+        if(timer2 == null) {
+            timer2 = new Timer(delay, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //this code executes each frame!
+
+                    if (bullets.size() >= 1)
+                        bullets.remove(0);
+
+                    repaint();
+                }
+            });
+        }
+
+        timer2.start();
     }
 
     public void setUpMouseListener(){
@@ -60,7 +90,16 @@ public class Main extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                bt.setDestin(e.getX(),e.getY());
+                if (e.getButton() == MouseEvent.BUTTON3){
+                    defs.add(new DefenceTower(e.getX(),e.getY()));
+                }
+
+                if (e.getButton() == MouseEvent.BUTTON1 ) {
+                    for (BasicTroop bt :
+                            troops) {
+                        bt.setDestin(e.getX(), e.getY());
+                    }
+                }
             }
 
             @Override
@@ -83,6 +122,7 @@ public class Main extends JPanel {
     public void paintComponent(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
 
+        super.paintComponent(g2);
         Background b = new Background();
         CrystalThing c1 = new CrystalThing(75,350);
         CrystalThing c2 = new CrystalThing(1265,350);
@@ -90,8 +130,25 @@ public class Main extends JPanel {
         b.draw(g2);
         c1.draw(g2);
         c2.draw(g2);
-        bt.draw(g2);
+        for (DefenceTower df : defs) {
+            df.draw(g2);
+            for (BasicTroop bt :troops) {
+                if (df.checkIn(bt.getX(),bt.getY()) && bullets.size() < 1){
+                    Bullet bullet = new Bullet(bt.getX()-50,bt.getY()-50);
+                    bullets.add(bullet);
+                    setUpTimer2(2000);
+                }
+            }
+        }
+        for (BasicTroop bt : troops) {
+            bt.draw(g2);
+        }
+        for (Bullet bul : bullets) {
+            bul.draw(g2);
+        }
     }
+
+
 
 
 }

@@ -1,29 +1,21 @@
 import java.awt.*;
 
 public class BasicTroop {
-    private int x,y,vx,vy;
+    private int x,y,vx,vy, moveRange;
     private Point destin;
-    private int storage;
 
     public BasicTroop(int x,int y){
         this.x = x;
         this.y = y;
         vx = 5;
         vy = 5;
+        
         destin = new Point(x,y);
-        storage = 0;
     }
 
     public void draw(Graphics2D g2){
         g2.setColor(Color.black);
         g2.fillRect(x,y,10,10);
-    }
-
-    public void adStorage(int amt, Platmium plat){
-        while(storage > 5) {
-            plat.mine();
-            storage++;
-        }
     }
 
     public void move(){
@@ -43,6 +35,8 @@ public class BasicTroop {
     public void setVy(int vy) {
         this.vy = vy;
     }
+    public int getX(){ return x;}
+    public int getY(){return y;}
     public void setDestin(int x,int y) {
         destin.setLocation(x, y);
     }
