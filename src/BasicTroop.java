@@ -106,6 +106,10 @@ public class BasicTroop {
         this.isMoveTurn = isMoveTurn;
     }
 
+    public void takeDmg(int dmgTaken){
+        health -= dmgTaken;
+    }
+
     public boolean isAlive(){
         if(health > 0){
             return true;

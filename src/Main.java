@@ -53,10 +53,10 @@ public class Main extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     //this code executes each frame!
 
-//                    for (BasicTroop bt :
-//                            troops) {
-//                        bt.move();
-//                    }
+                    for (BasicTroop bt : troopsp1) {
+                        bt.move();
+                    }
+
 
 
                     repaint();
@@ -99,8 +99,9 @@ public class Main extends JPanel {
                     defs.add(new DefenceTower(e.getX(),e.getY()));
                 }
 
-                if (e.getButton() == MouseEvent.BUTTON1 ) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
                     for (BasicTroop bt : troopsp1) {
+                        bt.setInitial();
                         bt.setDestin(e.getX(), e.getY());
                     }
                 }
