@@ -32,6 +32,8 @@ public class BasicTroop {
         g2.setColor(Color.black);
         g2.fillRect((int)x - troopSize/2,(int)y - troopSize/2,troopSize,troopSize);
 
+
+        //draws movement range circle
         if(isMoveTurn) {
             g2.setColor(new Color(255, 237, 0, 100));
             g2.fillOval((int) x + (int) distTravelled - moveRange, (int) y + (int) distTravelled - moveRange, 2 * (moveRange - (int) distTravelled), 2 * (moveRange - (int) distTravelled));

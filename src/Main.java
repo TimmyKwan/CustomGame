@@ -6,20 +6,23 @@ import java.util.ArrayList;
 public class Main extends JPanel {
 
     private Timer timer, timer2;
-    private static ArrayList<BasicTroop> troops;
+    private static ArrayList<BasicTroop> troopsp1;
+    private static ArrayList<BasicTroop> troopsp2;
     private static ArrayList<Bullet> bullets;
     private static ArrayList<DefenceTower> defs;
+    private int turn;
 
     public Main(int w,int h){
         setSize(w,h);
         setUpTimer(1000/60);
         setUpMouseListener();
-        troops = new ArrayList<>();
+        troopsp1 = new ArrayList<>();
         defs = new ArrayList<>();
         bullets = new ArrayList<>();
-        troops.add(new BasicTroop(100,100));
-    }
+        troopsp1.add(new BasicTroop(100,100));
+        turn = 0;
 
+    }
 
 
     public static void main(String[] args) {
@@ -41,6 +44,8 @@ public class Main extends JPanel {
 
 
     }
+
+
     public void setUpTimer(int delay){
         if(timer == null) {
             timer = new Timer(delay, new ActionListener() {
@@ -48,10 +53,10 @@ public class Main extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     //this code executes each frame!
 
-                    for (BasicTroop bt :
-                            troops) {
-                        bt.move();
-                    }
+//                    for (BasicTroop bt :
+//                            troops) {
+//                        bt.move();
+//                    }
 
 
                     repaint();
@@ -95,8 +100,7 @@ public class Main extends JPanel {
                 }
 
                 if (e.getButton() == MouseEvent.BUTTON1 ) {
-                    for (BasicTroop bt :
-                            troops) {
+                    for (BasicTroop bt : troopsp1) {
                         bt.setDestin(e.getX(), e.getY());
                     }
                 }
@@ -132,7 +136,7 @@ public class Main extends JPanel {
         c2.draw(g2);
         for (DefenceTower df : defs) {
             df.draw(g2);
-            for (BasicTroop bt :troops) {
+            for (BasicTroop bt :troopsp1) {
                 if (df.checkIn(bt.getX(),bt.getY()) && bullets.size() < 1){
                     Bullet bullet = new Bullet(bt.getX()-50,bt.getY()-50);
                     bullets.add(bullet);
@@ -140,7 +144,7 @@ public class Main extends JPanel {
                 }
             }
         }
-        for (BasicTroop bt : troops) {
+        for (BasicTroop bt : troopsp1) {
             bt.draw(g2);
         }
         for (Bullet bul : bullets) {
