@@ -110,4 +110,12 @@ public class BasicTroop {
         }
         return false;
     }
+
+    public int getX(){
+        return (int)(x);
+    }
+
+    public int getY(){
+        return (int)(y);
+    }
 }
