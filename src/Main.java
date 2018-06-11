@@ -24,8 +24,8 @@ public class Main extends JPanel{
         defs2 = new ArrayList<>();
         bullets1 = new ArrayList<>();
         bullets2 = new ArrayList<>();
-        troopsp1.add(new BasicTroop(100,100));
-        troopsp2.add(new BasicTroop(200,100));
+        troopsp1.add(new BasicTroop(100,100, 0));
+        troopsp2.add(new BasicTroop(200,100, 1));
         turn = 0;
 
     }

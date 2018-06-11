@@ -1,14 +1,18 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class BasicTroop {
 
-    private int health, dmg, moveRange, troopSize;
+    private int health, dmg, moveRange,moveTurn;
     double x,y, vx, vy, distTravelled;
     private Point initial, destin;
     private boolean isMoveTurn;
     private int storage;
+    private BufferedImage greenPic,redPic;
 
-    public BasicTroop(int x, int y){
+    public BasicTroop(int x, int y, int moveTurn){
         this.x = x;
         this.y = y;
         vx = 0;
@@ -17,7 +21,8 @@ public class BasicTroop {
         storage = 0;
         initial = new Point(x,y);
 
-        troopSize = 10;
+        this.moveTurn = moveTurn;
+
         health = 6;
         dmg = 2;
         moveRange = 80;
@@ -25,13 +30,28 @@ public class BasicTroop {
 
         //for testing purposes, is on true, should be initially false in actual game
         isMoveTurn = true;
+
+        try {
+            this.greenPic = ImageIO.read(new File("./res/" + "GreenSoldier.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            this.redPic = ImageIO.read(new File("./res/" + "RedSoldier.png"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void draw(Graphics2D g2){
-        g2.setColor(Color.RED);
-        g2.setColor(Color.black);
-        g2.fillRect((int)x - troopSize/2,(int)y - troopSize/2,troopSize,troopSize);
 
+        if (moveTurn%2 == 0){
+            g2.drawImage(greenPic, (int)x - greenPic.getWidth()/2,(int)y - greenPic.getHeight()/2, null);
+        }
+        else
+            g2.drawImage(redPic, (int)x - redPic.getWidth()/2,(int)y - redPic.getHeight()/2, null);
 
         //draws movement range circle
         if(isMoveTurn) {
@@ -98,9 +118,6 @@ public class BasicTroop {
         this.moveRange = moveRange;
     }
     //just in case you want to change troop size, although, with images, this wont be necessary
-    public void setTroopSize(int troopSize){
-        this.troopSize = troopSize;
-    }
 
     //use setMoveTurn to set isMoveTurn to true when it is this troops turn
     public void setMoveTurn(boolean isMoveTurn){
