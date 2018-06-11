@@ -3,23 +3,29 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Main extends JPanel {
+public class Main extends JPanel{
 
-    private Timer timer, timer2;
+    private Timer timer,timer1, timer2;
     private static ArrayList<BasicTroop> troopsp1;
     private static ArrayList<BasicTroop> troopsp2;
-    private static ArrayList<Bullet> bullets;
-    private static ArrayList<DefenceTower> defs;
+    private static ArrayList<Bullet> bullets1, bullets2;
+    private static ArrayList<DefenceTower> defs1;
+    private static ArrayList<DefenceTower> defs2;
     private int turn;
 
     public Main(int w,int h){
         setSize(w,h);
         setUpTimer(1000/60);
         setUpMouseListener();
+        setUpKeyListener();
         troopsp1 = new ArrayList<>();
-        defs = new ArrayList<>();
-        bullets = new ArrayList<>();
+        troopsp2 = new ArrayList<>();
+        defs1 = new ArrayList<>();
+        defs2 = new ArrayList<>();
+        bullets1 = new ArrayList<>();
+        bullets2 = new ArrayList<>();
         troopsp1.add(new BasicTroop(100,100));
+        troopsp2.add(new BasicTroop(200,100));
         turn = 0;
 
     }
@@ -53,10 +59,13 @@ public class Main extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     //this code executes each frame!
 
-                    for (BasicTroop bt : troopsp1) {
-                        bt.move();
-                    }
+                        for (BasicTroop bt : troopsp1) {
+                            bt.move();
+                        }
 
+                        for (BasicTroop bt : troopsp2) {
+                            bt.move();
+                        }
 
 
                     repaint();
@@ -74,8 +83,8 @@ public class Main extends JPanel {
                 public void actionPerformed(ActionEvent e) {
                     //this code executes each frame!
 
-                    if (bullets.size() >= 1)
-                        bullets.remove(0);
+                    if (bullets2.size() >= 1)
+                        bullets2.remove(0);
 
                     repaint();
                 }
@@ -83,6 +92,24 @@ public class Main extends JPanel {
         }
 
         timer2.start();
+    }
+
+    public void setUpTimer1(int delay){
+        if(timer1 == null) {
+            timer1 = new Timer(delay, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //this code executes each frame!
+
+                    if (bullets1.size() >= 1)
+                        bullets1.remove(0);
+
+                    repaint();
+                }
+            });
+        }
+
+        timer1.start();
     }
 
     public void setUpMouseListener(){
@@ -95,14 +122,25 @@ public class Main extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                if (e.getButton() == MouseEvent.BUTTON3){
-                    defs.add(new DefenceTower(e.getX(),e.getY()));
+                if (e.getButton() == MouseEvent.BUTTON3 && turn%2 == 0){
+                    defs1.add(new DefenceTower(e.getX(),e.getY(),turn));
                 }
 
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    for (BasicTroop bt : troopsp1) {
-                        bt.setInitial();
-                        bt.setDestin(e.getX(), e.getY());
+                if (e.getButton() == MouseEvent.BUTTON3 && turn%2 == 1){
+                    defs2.add(new DefenceTower(e.getX(),e.getY(),turn));
+                }
+
+                if (e.getButton() == MouseEvent.BUTTON1 ) {
+
+                    if (turn%2 == 0) {
+                        for (BasicTroop bt : troopsp1) {
+                            bt.setDestin(e.getX(), e.getY());
+                        }
+                    }
+                    else{
+                        for (BasicTroop bt : troopsp2) {
+                            bt.setDestin(e.getX(), e.getY());
+                        }
                     }
                 }
             }
@@ -124,6 +162,45 @@ public class Main extends JPanel {
         });
     }
 
+    public void setUpKeyListener(){
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                if (e.getKeyChar() == KeyEvent.VK_SPACE){
+                    turn++;
+                    if (turn%2 == 0){
+                        for (BasicTroop bt : troopsp1) {
+                            bt.setMoveTurn(true);
+                        }
+                        for (BasicTroop bt : troopsp2) {
+                            bt.setMoveTurn(false);
+                        }
+
+                    }
+                    else{
+                        for (BasicTroop bt : troopsp2) {
+                            bt.setMoveTurn(true);
+                        }   for (BasicTroop bt : troopsp1) {
+                            bt.setMoveTurn(false);
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+    }
+
     public void paintComponent(Graphics g){
         Graphics2D g2 = (Graphics2D) g;
 
@@ -135,20 +212,44 @@ public class Main extends JPanel {
         b.draw(g2);
         c1.draw(g2);
         c2.draw(g2);
-        for (DefenceTower df : defs) {
+        for (DefenceTower df : defs2) {
             df.draw(g2);
             for (BasicTroop bt :troopsp1) {
-                if (df.checkIn(bt.getX(),bt.getY()) && bullets.size() < 1){
+                if (df.checkIn(bt.getX(),bt.getY()) && bullets2.size() < 1){
                     Bullet bullet = new Bullet(bt.getX()-50,bt.getY()-50);
-                    bullets.add(bullet);
-                    setUpTimer2(2000);
+                    bullets2.add(bullet);
                 }
+//                for (Bullet bul:bullets2) {
+//                    if (df.checkIn(bt.getX(),bt.getY()) )
+//                }
+                if (!df.checkIn(bt.getX(),bt.getY()) && bullets2.size() >= 1)
+                    bullets2.remove(0);
+                
             }
         }
+
+        for (DefenceTower df : defs1) {
+            df.draw(g2);
+            for (BasicTroop bt :troopsp2) {
+                if (df.checkIn(bt.getX(),bt.getY()) && bullets1.size() < 1){
+                    Bullet bullet = new Bullet(bt.getX()-50,bt.getY()-50);
+                    bullets1.add(bullet);
+                }
+                if (!df.checkIn(bt.getX(),bt.getY()) && bullets1.size() >= 1)
+                    bullets1.remove(0);
+            }
+        }
+
         for (BasicTroop bt : troopsp1) {
             bt.draw(g2);
         }
-        for (Bullet bul : bullets) {
+        for (BasicTroop bt : troopsp2) {
+            bt.draw(g2);
+        }
+        for (Bullet bul : bullets1) {
+            bul.draw(g2);
+        }
+        for (Bullet bul : bullets2) {
             bul.draw(g2);
         }
     }

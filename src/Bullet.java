@@ -28,4 +28,7 @@ public class Bullet {
 
             g2.drawImage(pic, x + (int) (Math.random() * 75), y + (int) (Math.random() * 75), null);
     }
+
+    public int getX(){return x;}
+    public int getY(){return y;}
 }
