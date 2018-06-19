@@ -1,8 +1,9 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class DefenceTower {
     private int x,y,turn;
-    private int diameter, damage, health;
+    private int diameter, damage, health,hits;
     private double distFromCenter;
 
     public DefenceTower(int x, int y, int turn){
@@ -11,6 +12,7 @@ public class DefenceTower {
         diameter = 350;
         distFromCenter = Math.PI * diameter;
         this.turn = turn;
+        hits = 0;
     }
 
     public void draw(Graphics2D g2){
@@ -30,6 +32,14 @@ public class DefenceTower {
         if (dist <= diameter/2)
             return true;
         return false;
+    }
+
+    public int getHits(){
+        return hits;
+    }
+
+    public void hit(){
+        hits++;
     }
 
 }

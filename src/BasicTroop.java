@@ -5,18 +5,22 @@ import java.io.File;
 
 public class BasicTroop {
 
-    private int health, dmg, moveRange,moveTurn;
-    double x,y, vx, vy, distTravelled;
-    private Point initial, destin;
+    private int health, dmg,moveTurn;
+    public double x,y, vx, vy ;
+    public Point initial, destin;
     private boolean isMoveTurn;
     private int storage;
     private BufferedImage greenPic,redPic;
+    public int moveRange;
+    public double distTravelled;
+    public boolean isSelect;
 
     public BasicTroop(int x, int y, int moveTurn){
         this.x = x;
         this.y = y;
         vx = 0;
         vy = 0;
+        isSelect = false;
         destin = new Point(x,y);
         storage = 0;
         initial = new Point(x,y);
@@ -54,16 +58,14 @@ public class BasicTroop {
             g2.drawImage(redPic, (int)x - redPic.getWidth()/2,(int)y - redPic.getHeight()/2, null);
 
         //draws movement range circle
-        if(isMoveTurn) {
+        if(isMoveTurn && isSelect) {
             g2.setColor(new Color(255, 237, 0, 100));
             g2.fillOval((int) x + (int) distTravelled - moveRange, (int) y + (int) distTravelled - moveRange, 2 * (moveRange - (int) distTravelled), 2 * (moveRange - (int) distTravelled));
         }
-    }
 
-    public void adStorage(int amt, Platmium plat){
-        while(storage > 5) {
-            plat.mine();
-            storage++;
+        if (isSelect){
+            g2.setColor(Color.CYAN);
+            g2.drawRect((int)x - redPic.getWidth()/2,(int)y - redPic.getHeight()/2,30,30);
         }
     }
 
@@ -143,4 +145,16 @@ public class BasicTroop {
     public int getY(){
         return (int)(y);
     }
+
+    public boolean checkIn(int x, int y){
+        int dist = (int)Math.sqrt(Math.abs(((this.x-x) * (this.x-x)) + ((this.y-y) * (this.y-y))));
+        if (dist <= 15)
+            return true;
+        return false;
+    }
+
+    public void setIsSelect(boolean select){
+        isSelect = select;
+    }
+    public boolean getIsSelect(){return isSelect;}
 }
